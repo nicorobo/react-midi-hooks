@@ -1,0 +1,36 @@
+{
+	"name": "react-midi",
+	"version": "0.0.1",
+	"description": "React hooks for working with midi",
+	"main": "build/index.js",
+	"scripts": {
+		"start": "webpack --watch --mode=development",
+		"build": "webpack --mode=production",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"peerDependencies": {
+		"react": "^16.8.0"
+	},
+	"keywords": [
+		"react-midi",
+		"react",
+		"midi",
+		"hooks"
+	],
+	"author": "Nick Roberts",
+	"license": "ISC",
+	"dependencies": {
+		"react": "^16.8.6",
+		"uniqid": "^5.0.3",
+		"webpack": "^4.29.6"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.2.3",
+		"@babel/core": "^7.4.0",
+		"@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+		"@babel/plugin-transform-react-jsx": "^7.3.0",
+		"@babel/preset-env": "^7.4.2",
+		"babel-loader": "^8.0.5",
+		"webpack-cli": "^3.3.0"
+	}
+}
