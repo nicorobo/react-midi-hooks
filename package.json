@@ -1,6 +1,6 @@
 {
 	"name": "@react-midi/hooks",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "React hooks for working with midi",
 	"main": "build/index.js",
 	"scripts": {
