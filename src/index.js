@@ -76,9 +76,10 @@ const enrichInputs = (inputs) =>
 // This may have reprecusions when more than one hook is used for the same input, and one of them unregisters.
 const useConnectInput = (input) => {
 	useEffect(() => {
+		if (!input) return () => {};
 		if (input.onmidimessage === null) input.onmidimessage = handleMIDIMessage;
 		return () => (input.onmidimessage = null);
-	});
+	}, [input]);
 };
 
 export const useMIDIClock = (input, division = 1) => {
@@ -125,6 +126,7 @@ export const useMIDIMessage = (input) => {
 	};
 
 	useEffect(() => {
+		if (!input) return () => {};
 		const id = uniqid();
 		input.messageListeners[id] = handleMessage;
 		return () => delete input.messageListeners[id];
