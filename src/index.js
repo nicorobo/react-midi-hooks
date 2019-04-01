@@ -32,22 +32,22 @@ function handleMIDIMessage(message) {
 		this.messageListeners[key](message); // (value, control, channel)
 	}
 	switch (action) {
-		case 0xb0:
+		case 0xb0: // Control Change Message
 			for (const key in this.controlListeners) {
 				this.controlListeners[key](message.data[2], message.data[1], leastSig + 1); // (value, control, channel)
 			}
 			break;
-		case 0x90:
+		case 0x90: // Note On Message
 			for (const key in this.noteOnListeners) {
 				this.noteOnListeners[key](message.data[1], message.data[2], leastSig + 1); // (note, velocity, channel)
 			}
 			break;
-		case 0x80:
+		case 0x80: // Note Off Message
 			for (const key in this.noteOffListeners) {
 				this.noteOffListeners[key](message.data[1], message.data[2], leastSig + 1); // (note, velocity, channel)
 			}
 			break;
-		case 0xf0:
+		case 0xf0: // Transport/Clock Message
 			for (const key in this.clockListeners) {
 				this.clockListeners[key](leastSig); // (type)
 			}
@@ -68,31 +68,49 @@ const enrichInputs = (inputs) =>
 		input.noteOffListeners = input.noteOffListeners || {};
 		input.controlListeners = input.controlListeners || {};
 		input.messageListeners = input.messageListeners || {};
-		input.onmidimessage = handleMIDIMessage;
+		// input.onmidimessage = handleMIDIMessage; // This adds a listener by default, opening the connection and listening to every input
 		return input;
 	});
 
+// By using useConnectInput at the beggining of input hook, we prevent opening/maintaining connections with unused inputs.
+// This may have reprecusions when more than one hook is used for the same input, and one of them unregisters.
+const useConnectInput = (input) => {
+	useEffect(() => {
+		if (input.onmidimessage === null) input.onmidimessage = handleMIDIMessage;
+		return () => (input.onmidimessage = null);
+	});
+};
+
 export const useMIDIClock = (input, division = 1) => {
+	useConnectInput(input);
 	const [step, setStep] = useState(0);
 	const [isPlaying, setIsPlaying] = useState(false);
-	useEffect(() => {
-		const id = uniqid();
-		const handleClockMessage = () => {
-			// Keep track of count through closure. Is there a better way?
-			let steps = 0;
-			return (type) => {
-				if (type === 0x08) {
+	const handleClockMessage = () => {
+		// Keep track of count through closure. Is there a better way?
+		let steps = 0;
+		return (type) => {
+			switch (type) {
+				case 0x08:
 					steps++;
 					if (division === 1) setStep(steps);
 					else if (steps % division === 0) setStep(Math.floor(steps / division));
-				} else if (type === 0x0a) setIsPlaying(true);
-				else if (type === 0x0c) {
+					break;
+				case 0x0a:
+					setIsPlaying(true);
+					break;
+				case 0x0c:
 					steps = 0;
 					setIsPlaying(false);
 					setStep(0);
-				}
-			};
+					break;
+				default:
+					break;
+			}
 		};
+	};
+
+	useEffect(() => {
+		const id = uniqid();
 		input.clockListeners[id] = handleClockMessage();
 		return () => delete input.clockListeners[id];
 	}, [input]);
@@ -100,10 +118,12 @@ export const useMIDIClock = (input, division = 1) => {
 };
 
 export const useMIDIMessage = (input) => {
+	useConnectInput(input);
 	const [message, setMessage] = useState({});
 	const handleMessage = (message) => {
 		setMessage(message);
 	};
+
 	useEffect(() => {
 		const id = uniqid();
 		input.messageListeners[id] = handleMessage;
@@ -113,6 +133,7 @@ export const useMIDIMessage = (input) => {
 };
 
 export const useMIDIControl = (input, { control, channel } = {}) => {
+	useConnectInput(input);
 	const [value, setValue] = useState({ value: 0, control, channel });
 	const handleControlMessage = (value, cntrl, chan) => {
 		if ((!control || control === cntrl) && (!channel || channel === chan)) {
@@ -125,13 +146,15 @@ export const useMIDIControl = (input, { control, channel } = {}) => {
 		const id = uniqid();
 		input.controlListeners[id] = handleControlMessage;
 		return () => delete input.controlListeners[id];
-	}, [input, control]);
+	}, [input, control, channel]);
 	return value;
 };
 
 export const useMIDIControls = (input, controls, filter = {}) => {
+	useConnectInput(input);
 	const [values, setValues] = useState(controls.map((c) => 0));
 	const value = useMIDIControl(input, filter);
+
 	useEffect(() => {
 		if (!input) return () => {}; // No input provided, return noop
 		const targetIndex = controls.indexOf(value.control);
@@ -142,6 +165,7 @@ export const useMIDIControls = (input, controls, filter = {}) => {
 };
 
 export const useMIDINote = (input, { note, channel } = {}) => {
+	useConnectInput(input);
 	const [value, setValue] = useState({});
 	const handleNoteOnMessage = (value, velocity, chan) => {
 		if ((!note || value === note) && (!channel || channel === chan)) {
@@ -153,6 +177,7 @@ export const useMIDINote = (input, { note, channel } = {}) => {
 			setValue({ note: value, on: false, velocity, channel });
 		}
 	};
+
 	useEffect(() => {
 		if (!input) return () => {}; // No input provided, return noop
 		const id = uniqid();
@@ -167,6 +192,7 @@ export const useMIDINote = (input, { note, channel } = {}) => {
 };
 
 export const useMIDINotes = (input, filter = {}) => {
+	useConnectInput(input);
 	const [notes, setNotes] = useState([]);
 	const value = useMIDINote(input, filter);
 	useEffect(() => {
