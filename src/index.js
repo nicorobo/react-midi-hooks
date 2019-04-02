@@ -72,7 +72,7 @@ const enrichInputs = (inputs) =>
 		return input;
 	});
 
-// By using useConnectInput at the beggining of input hook, we prevent opening/maintaining connections with unused inputs.
+// By using useConnectInput at the beggining of an input hook, we prevent opening/maintaining connections with unused inputs.
 // This may have reprecusions when more than one hook is used for the same input, and one of them unregisters.
 const useConnectInput = (input) => {
 	useEffect(() => {
@@ -80,6 +80,19 @@ const useConnectInput = (input) => {
 		if (input.onmidimessage === null) input.onmidimessage = handleMIDIMessage;
 		return () => (input.onmidimessage = null);
 	}, [input]);
+};
+
+export const useMIDIConnectionManager = (connections) => {
+	const connectionsAvaliable = connections.length > 0;
+	const [id, setId] = useState(0);
+
+	useEffect(() => {
+		const index = connections.findIndex((c) => c.id === id);
+		// I believe setting the id to 0 here would result in an infinite loop if there actually aren't any connections
+		if (index < 0) setId(connectionsAvaliable ? connections[0].id : 0);
+	}, [connections, id]);
+	const connection = connections.find((i) => i.id === id);
+	return [connection, setId];
 };
 
 export const useMIDIClock = (input, division = 1) => {

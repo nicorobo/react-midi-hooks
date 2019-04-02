@@ -157,7 +157,7 @@ const MIDINoteLog = ({ input }) => {
 
 ### `useMIDIOutput(output)`
 
-`useMIDIOutput()` returns function that can be used to send data to the given output.
+`useMIDIOutput()` returns functions that can be used to send messages to the given output.
 
 -   `noteOn(note, velocity=127, channel=1)`: Sends a note on message to the output, defaulting to a velocity of 127 and channel 1.
 -   `noteOff(note, velocity=127, channel=1)`: Sends a note of message to the output, defaulting to a velocity of 127 and channel 1.
@@ -177,5 +177,20 @@ const MIDIButton = ({ output }) => {
 		setTimeout(() => noteOff(60), 200); // Wait 200ms and then trigger note off.
 	};
 	return <div onClick={handleClick}>Click me!</div>;
+};
+```
+
+### `useMIDIConnectionManager(connections)`
+
+Given an array of connections (inputs or outputs), `useMIDIConnectionManager()` returns the first avaliable connection, as well as a function to change the connection by calling it with a connection id.
+
+If a connection is no longer avaliable, or an unavailable id is given, the first avaliable connection will be returned.
+The functions returned can be used to create a selection UI, or used with `<MIDIConnectionManager />` from [@react-midi/components](https://github.com/nickroberts404/react-midi-components).
+
+```js
+const App = () => {
+	const [inputs, outputs] = useMIDI();
+	const [input, setInputId] = useMIDIConnectionManager(inputs);
+	const [output, setOutputId] = useMIDIConnectionManager(outputs);
 };
 ```
