@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useInternalMIDIClock } from './clock';
 import uniqid from 'uniqid';
 
+export { useInternalMIDIClock };
 export const useMIDI = () => {
 	const [connections, changeConnections] = useState({
 		inputs: [],
