@@ -128,6 +128,7 @@ export const useMIDIClock = (input, division = 1) => {
 	};
 
 	useEffect(() => {
+		if (!input) return () => {};
 		const id = uniqid();
 		input.clockListeners[id] = handleClockMessage();
 		return () => delete input.clockListeners[id];
