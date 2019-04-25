@@ -9,20 +9,22 @@ export const useMIDI = () => {
 		outputs: [],
 	});
 	useEffect(() => {
-		navigator.requestMIDIAccess().then((access) => {
-			changeConnections({
-				inputs: enrichInputs([...access.inputs.values()]),
-				outputs: [...access.outputs.values()],
-			});
-			access.onstatechange = (e) => {
+		if (navigator.requestMIDIAccess) {
+			navigator.requestMIDIAccess().then((access) => {
 				changeConnections({
 					inputs: enrichInputs([...access.inputs.values()]),
 					outputs: [...access.outputs.values()],
 				});
-			};
-		});
+				access.onstatechange = (e) => {
+					changeConnections({
+						inputs: enrichInputs([...access.inputs.values()]),
+						outputs: [...access.outputs.values()],
+					});
+				};
+			});
+		}
 	}, []);
-	return [connections.inputs, connections.outputs];
+	return [connections.inputs, connections.outputs, !!navigator.requestMIDIAccess];
 };
 
 // If listeners were kept in a general .listeners field then 100 functions listening for a noteOn event would get
