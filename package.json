@@ -1,44 +1,44 @@
 {
-	"name": "@react-midi/hooks",
-	"version": "0.0.9",
-	"description": "React hooks for working with midi",
-	"main": "build/index.js",
-	"scripts": {
-		"start": "webpack --watch --mode=development",
-		"build": "webpack --mode=production",
-		"prepublish": "npm run build"
-	},
-	"peerDependencies": {
-		"react": "^16.8.0"
-	},
-	"keywords": [
-		"react-midi",
-		"react",
-		"midi",
-		"hooks"
-	],
-	"author": "Nick Roberts",
-	"license": "ISC",
-	"dependencies": {
-		"uniqid": "^5.0.3"
-	},
-	"devDependencies": {
-		"@babel/cli": "^7.2.3",
-		"@babel/core": "^7.4.0",
-		"@babel/plugin-proposal-object-rest-spread": "^7.4.0",
-		"@babel/preset-env": "^7.4.2",
-		"babel-loader": "^8.0.5",
-		"react": "^16.8.6",
-		"webpack": "^4.29.6",
-		"webpack-cli": "^3.3.0",
-		"worker-loader": "^2.0.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/nickroberts404/react-midi-hooks.git"
-	},
-	"bugs": {
-		"url": "https://github.com/nickroberts404/react-midi-hooks/issues"
-	},
-	"homepage": "https://github.com/nickroberts404/react-midi-hooks#readme"
+  "name": "@react-midi/hooks",
+  "version": "0.0.9",
+  "description": "React hooks for working with midi",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "webpack --watch --mode=development",
+    "build": "webpack --mode=production",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0"
+  },
+  "keywords": [
+    "react-midi",
+    "react",
+    "midi",
+    "hooks"
+  ],
+  "author": "Nick Roberts",
+  "license": "ISC",
+  "dependencies": {
+    "uniqid": "^5.0.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "react": "^16.12.0",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "worker-loader": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickroberts404/react-midi-hooks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nickroberts404/react-midi-hooks/issues"
+  },
+  "homepage": "https://github.com/nickroberts404/react-midi-hooks#readme"
 }
