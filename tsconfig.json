@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es5",
+    "declaration": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": ["esnext", "es2017", "dom"]
+  },
+  "exclude": ["node_modules", "dist"]
+}

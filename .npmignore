@@ -1,5 +1,5 @@
 src
 webpack.config.js
-.babelrc
+.tsconfig
 .gitignore
 node_modules
