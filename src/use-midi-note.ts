@@ -9,10 +9,8 @@ export const useMIDINote = (
 ) => {
   useConnectInput(input);
   const [value, setValue] = useState<MIDINote>();
-  console.log('ah yeah');
   const handleNoteOnMessage = (message: Message) => {
     const { target: note, value: velocity, channel } = message;
-    console.log('note on message!: ', note, velocity, channel);
     if (
       (!noteFilter || noteFilter === note) &&
       (!channelFilter || channelFilter === channel)

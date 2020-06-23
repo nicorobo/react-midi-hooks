@@ -152,12 +152,7 @@ const App = () => {
 
 const MIDINoteLog = ({ input }) => {
   const message = useMIDIMessage(input); // initially return {}
-  return (
-    <div>
-      Message Data: {message.data ? message.data.join(', ') : ''} // Message
-      Data: 144, 60, 100 (Note On, Middle C, Velocity 100)
-    </div>
-  );
+  return <div>Message Data: {message.data ? message.data.join(', ') : ''}</div>;
 };
 ```
 
