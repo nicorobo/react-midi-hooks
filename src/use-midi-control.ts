@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import uniqid from 'uniqid';
-import { Input, Message, MIDIFilter } from './types';
+import { Input, Message, MIDIFilter, MIDIControl } from './types';
 import { useConnectInput } from './use-connect-input';
 
 export const useMIDIControl = (
@@ -8,9 +8,9 @@ export const useMIDIControl = (
   { target: controlFilter, channel: channelFilter }: MIDIFilter = {}
 ) => {
   useConnectInput(input);
-  const [value, setValue] = useState({
+  const [value, setValue] = useState<MIDIControl>({
     control: controlFilter,
-    value: 0,
+    value: undefined,
     channel: channelFilter,
   });
   const handleControlMessage = (message: Message) => {

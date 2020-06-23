@@ -85,7 +85,7 @@ const App = () => {
 
 const MIDIClock = ({ input }) => {
   const [step, isPlaying] = useMIDIClock(input, 12); // initially return [0, false]
-  return <div>Eight notes since starting: {step}</div>;
+  return <div>Eighth notes since starting: {step}</div>;
 };
 ```
 

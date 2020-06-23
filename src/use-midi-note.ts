@@ -8,7 +8,7 @@ export const useMIDINote = (
   { target: noteFilter, channel: channelFilter }: MIDIFilter = {}
 ) => {
   useConnectInput(input);
-  const [value, setValue] = useState<MIDINote>();
+  const [value, setValue] = useState<MIDINote | undefined>();
   const handleNoteOnMessage = (message: Message) => {
     const { target: note, value: velocity, channel } = message;
     if (
@@ -27,7 +27,6 @@ export const useMIDINote = (
       setValue({ note, on: false, velocity, channel });
     }
   };
-
   useEffect(() => {
     if (!input) return;
     const id = uniqid();

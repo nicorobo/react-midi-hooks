@@ -1,5 +1,4 @@
-// import { useCallback } from 'react';
-import { Output, MIDIFilter, MIDINote } from './types';
+import { Output } from './types';
 import { MIDIConstants } from './constants';
 
 export const useMIDIOutput = (output: Output) => {

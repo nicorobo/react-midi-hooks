@@ -6,7 +6,7 @@ import { useConnectInput } from './use-connect-input';
 export const useMIDIMessage = (input: Input) => {
   useConnectInput(input);
 
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState<MIDIMessage | undefined>();
   const handleMessage = (message: MIDIMessage) => {
     setMessage(message);
   };

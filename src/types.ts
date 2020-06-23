@@ -36,3 +36,9 @@ export type MIDINote = {
   channel: number;
   on: boolean;
 };
+
+export type MIDIControl = {
+  control: number;
+  value: number | undefined;
+  channel: number;
+};
