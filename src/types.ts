@@ -7,9 +7,9 @@ export type Connection = {
 export type Input = {
   onmidimessage: (message: MIDIMessage) => void;
   clockListeners: { [id: string]: (type: any) => void };
-  noteOnListeners: { [id: string]: (messgae: Message) => void };
-  noteOffListeners: { [id: string]: (messgae: Message) => void };
-  controlListeners: { [id: string]: (messgae: Message) => void };
+  noteOnListeners: { [id: string]: (message: Message) => void };
+  noteOffListeners: { [id: string]: (message: Message) => void };
+  controlListeners: { [id: string]: (message: Message) => void };
   messageListeners: { [id: string]: (message: MIDIMessage) => void };
 } & Connection;
 

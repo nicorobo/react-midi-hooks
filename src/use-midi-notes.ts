@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Input, MIDIFilter, MIDINote } from './types';
-import { useMIDINote } from './use-midi-Note';
+import { useMIDINote } from './use-midi-note';
 import { useConnectInput } from './use-connect-input';
 
 export const useMIDINotes = (input: Input, filter: MIDIFilter = {}) => {

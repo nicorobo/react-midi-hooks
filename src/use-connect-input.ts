@@ -23,17 +23,29 @@ function handleMIDIMessage(message: MIDIMessage) {
   switch (action) {
     case 0xb0: // Control Change Message
       for (const key in this.controlListeners) {
-        this.controlListeners[key](message.data[2], message.data[1], channel); // (value, control, channel)
+        this.controlListeners[key]({
+          target: message.data[2],
+          value: message.data[1],
+          channel,
+        }); // (value, control, channel)
       }
       break;
     case 0x90: // Note On Message
       for (const key in this.noteOnListeners) {
-        this.noteOnListeners[key](message.data[1], message.data[2], channel); // (note, velocity, channel)
+        this.noteOnListeners[key]({
+          target: message.data[1],
+          value: message.data[2],
+          channel,
+        }); // (note, velocity, channel)
       }
       break;
     case 0x80: // Note Off Message
       for (const key in this.noteOffListeners) {
-        this.noteOffListeners[key](message.data[1], message.data[2], channel); // (note, velocity, channel)
+        this.noteOffListeners[key]({
+          target: message.data[1],
+          value: message.data[2],
+          channel,
+        }); // (note, velocity, channel)
       }
       break;
     case 0xf0: // Transport/Clock Message
