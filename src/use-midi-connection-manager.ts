@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Connection } from './types';
 
-export const useMIDIConnectionManager = (connections: Connection[]) => {
+export const useMIDIConnectionManager = <T extends Connection>(
+  connections: T[]
+): [T, (id: string) => void] => {
   const connectionsAvaliable = connections.length > 0;
   const [id, setId] = useState('');
 

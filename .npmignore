@@ -1,5 +1,6 @@
 src
+ideas.txt
 webpack.config.js
-.tsconfig
+tsconfig.json
 .gitignore
 node_modules
