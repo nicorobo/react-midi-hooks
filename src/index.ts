@@ -1,5 +1,4 @@
 export * from './use-midi';
-export * from './use-midi-connection-manager';
 export * from './use-midi-control';
 export * from './use-midi-controls';
 export * from './use-midi-note';
