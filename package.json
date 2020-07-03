@@ -1,6 +1,6 @@
 {
   "name": "@react-midi/hooks",
-  "version": "2.0.0-beta-01",
+  "version": "2.0.0-beta-02",
   "description": "React hooks for working with midi",
   "main": "./dist/bundle.js",
   "scripts": {
