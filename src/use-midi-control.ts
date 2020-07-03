@@ -1,33 +1,35 @@
-import { useState, useEffect } from 'react';
-import uniqid from 'uniqid';
-import { Input, Message, MIDIFilter, MIDIControl } from './types';
-import { useConnectInput } from './use-connect-input';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { Message, MIDIFilter, MIDIControl } from './types';
+import { MIDIContext } from './midi-provider';
 
-export const useMIDIControl = (
-  input: Input,
-  { target: controlFilter, channel: channelFilter }: MIDIFilter = {}
-) => {
-  useConnectInput(input);
+export const useMIDIControl = ({
+  target: controlFilter,
+  channel: channelFilter,
+}: MIDIFilter = {}) => {
+  const { emitter } = useContext(MIDIContext);
   const [value, setValue] = useState<MIDIControl>({
     control: controlFilter,
     value: undefined,
     channel: channelFilter,
   });
-  const handleControlMessage = (message: Message) => {
-    const { target, value, channel } = message;
-    if (
-      (!controlFilter || controlFilter === target) &&
-      (!channelFilter || channelFilter === channel)
-    ) {
-      setValue({ control: target, value, channel });
-    }
-  };
+  const handleCC = useCallback(
+    (message: Message) => {
+      const { target, value, channel } = message;
+      if (
+        (!controlFilter || controlFilter === target) &&
+        (!channelFilter || channelFilter === channel)
+      ) {
+        setValue({ control: target, value, channel });
+      }
+    },
+    [controlFilter, channelFilter, setValue]
+  );
 
   useEffect(() => {
-    if (!input) return;
-    const id = uniqid();
-    input.controlListeners[id] = handleControlMessage;
-    return () => delete input.controlListeners[id];
-  }, [input, controlFilter, channelFilter]);
+    const id = emitter.subscribe('control', handleCC);
+    return () => {
+      emitter.unsubscribe('control', id);
+    };
+  }, [emitter, handleCC]);
   return value;
 };

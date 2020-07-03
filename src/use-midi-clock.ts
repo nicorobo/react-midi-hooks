@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import uniqid from 'uniqid';
-import { Input } from './types';
-import { useConnectInput } from './use-connect-input';
+import { useState, useEffect, useContext } from 'react';
+import { MIDIContext } from './midi-provider';
 import { MIDIConstants } from './constants';
 
-export const useMIDIClock = (input: Input, division = 1) => {
-  useConnectInput(input);
+export const useMIDIClock = (division = 1) => {
+  const { emitter } = useContext(MIDIContext);
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const handleClockMessage = () => {
@@ -34,10 +32,10 @@ export const useMIDIClock = (input: Input, division = 1) => {
   };
 
   useEffect(() => {
-    if (!input) return;
-    const id = uniqid();
-    input.clockListeners[id] = handleClockMessage();
-    return () => delete input.clockListeners[id];
-  }, [input]);
+    const id = emitter.subscribe('clock', handleClockMessage);
+    return () => {
+      emitter.unsubscribe('clock', id);
+    };
+  }, [emitter, handleClockMessage]);
   return [step, isPlaying];
 };

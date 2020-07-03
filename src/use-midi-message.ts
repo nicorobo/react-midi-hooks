@@ -1,22 +1,20 @@
-import { useState, useEffect } from 'react';
-import uniqid from 'uniqid';
-import { Input, MIDIMessage } from './types';
-import { useConnectInput } from './use-connect-input';
+import { useState, useEffect, useContext } from 'react';
+import { MIDIContext } from './midi-provider';
+import { MIDIMessage } from './types';
 
-export const useMIDIMessage = (input: Input) => {
-  useConnectInput(input);
-
+export const useMIDIMessage = () => {
+  const { emitter } = useContext(MIDIContext);
   const [message, setMessage] = useState<MIDIMessage | undefined>();
   const handleMessage = (message: MIDIMessage) => {
     setMessage(message);
   };
 
   useEffect(() => {
-    if (!input) return;
-    const id = uniqid();
-    input.messageListeners[id] = handleMessage;
-    return () => delete input.messageListeners[id];
-  }, [input]);
+    const id = emitter.subscribe('all', handleMessage);
+    return () => {
+      emitter.unsubscribe('all', id);
+    };
+  }, [emitter, handleMessage]);
 
   return message;
 };

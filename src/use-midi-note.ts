@@ -1,41 +1,33 @@
-import { useState, useEffect } from 'react';
-import uniqid from 'uniqid';
-import { Input, Message, MIDIFilter, MIDINote } from './types';
-import { useConnectInput } from './use-connect-input';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { MIDIFilter, MIDINote } from './types';
+import { MIDIContext } from './midi-provider';
 
-export const useMIDINote = (
-  input: Input,
-  { target: noteFilter, channel: channelFilter }: MIDIFilter = {}
-) => {
-  useConnectInput(input);
+export const useMIDINote = ({
+  target: noteFilter,
+  channel: channelFilter,
+}: MIDIFilter = {}) => {
+  const { emitter } = useContext(MIDIContext);
   const [value, setValue] = useState<MIDINote | undefined>();
-  const handleNoteOnMessage = (message: Message) => {
-    const { target: note, value: velocity, channel } = message;
-    if (
-      (!noteFilter || noteFilter === note) &&
-      (!channelFilter || channelFilter === channel)
-    ) {
-      setValue({ note, on: true, velocity, channel });
-    }
-  };
-  const handleNoteOffMessage = (message: Message) => {
-    const { target: note, value: velocity, channel } = message;
-    if (
-      (!noteFilter || noteFilter === note) &&
-      (!channelFilter || channelFilter === channel)
-    ) {
-      setValue({ note, on: false, velocity, channel });
-    }
-  };
+
+  const handleNote = useCallback(
+    (message: any) => {
+      const { target: note, value: velocity, on, channel } = message;
+      if (
+        (!noteFilter || noteFilter === note) &&
+        (!channelFilter || channelFilter === channel)
+      ) {
+        setValue({ note, on, velocity, channel });
+      }
+    },
+    [noteFilter, channelFilter, setValue]
+  );
+
   useEffect(() => {
-    if (!input) return;
-    const id = uniqid();
-    input.noteOnListeners[`${id}-on`] = handleNoteOnMessage;
-    input.noteOffListeners[`${id}-off`] = handleNoteOffMessage;
+    const id = emitter.subscribe('note', handleNote);
     return () => {
-      delete input.noteOnListeners[`${id}-on`];
-      delete input.noteOffListeners[`${id}-off`];
+      emitter.unsubscribe('note', id);
     };
-  }, [input]);
+  }, [emitter, handleNote]);
+
   return value;
 };

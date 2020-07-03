@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Input, MIDIFilter, MIDINote } from './types';
+import { MIDIFilter, MIDINote } from './types';
 import { useMIDINote } from './use-midi-note';
-import { useConnectInput } from './use-connect-input';
 
-export const useMIDINotes = (input: Input, filter: MIDIFilter = {}) => {
-  useConnectInput(input);
+// TODO get this to work with mutiple channels
+export const useMIDINotes = (filter: MIDIFilter = {}) => {
   const [notes, setNotes] = useState<MIDINote[]>([]);
-  const value = useMIDINote(input, filter);
+  const value = useMIDINote(filter);
   useEffect(() => {
-    if (!input) return;
-    if (value.on) setNotes([...notes, value]);
-    else setNotes(notes.filter((n) => n.note !== value.note)); // Note off, remove note from array (maybe check for channel?)
-  }, [input, value]);
+    if (value === notes[notes.length - 1]) {
+      console.log('useless');
+      return;
+    }
+    if (value.on) {
+      setNotes([...notes, value]);
+    } else {
+      setNotes(notes.filter((n) => n.note !== value.note));
+    }
+  }, [value]);
   return notes;
 };
