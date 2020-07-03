@@ -4,6 +4,7 @@ import { inputSelected } from './reducer';
 
 export const useMIDIInputs = () => {
   const { state, dispatch } = useContext(MIDIContext);
+  const { inputs, selectedInputId } = state;
   const selectInput = useCallback(
     (inputId: string) => {
       dispatch(inputSelected(inputId));
@@ -11,8 +12,9 @@ export const useMIDIInputs = () => {
     [dispatch]
   );
   return {
-    selectedInputId: state.selectedInputId,
-    inputs: state.inputs,
+    input: inputs.find(({ id }) => id === selectedInputId),
+    inputs,
     selectInput,
+    selectedInputId,
   };
 };

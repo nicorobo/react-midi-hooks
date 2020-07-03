@@ -1,7 +1,8 @@
-import { Output } from './types';
 import { MIDIConstants } from './constants';
+import { useMIDIOutputs } from './use-midi-outputs';
 
-export const useMIDIOutput = (output: Output) => {
+export const useMIDIOutput = () => {
+  const { output } = useMIDIOutputs();
   if (!output) return {};
   const noteOn = (note: number, velocity = 127, channel = 1) => {
     const noteOnAndChannel = MIDIConstants.noteOn | getChannel(channel);

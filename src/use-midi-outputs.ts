@@ -4,6 +4,7 @@ import { outputSelected } from './reducer';
 
 export const useMIDIOutputs = () => {
   const { state, dispatch } = useContext(MIDIContext);
+  const { outputs, selectedOutputId } = state;
   const selectOutput = useCallback(
     (outputId: string) => {
       dispatch(outputSelected(outputId));
@@ -11,8 +12,9 @@ export const useMIDIOutputs = () => {
     [dispatch]
   );
   return {
-    selectedOutputId: state.selectedOutputId,
-    outputs: state.outputs,
+    output: outputs.find(({ id }) => id === selectedOutputId),
+    outputs,
     selectOutput,
+    selectedOutputId,
   };
 };
