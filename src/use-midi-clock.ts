@@ -1,12 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { MIDIContext } from './midi-provider';
 import { MIDIConstants } from './constants';
-
-export const useMIDIClock = (division = 1) => {
+type Args = {
+  division: number;
+};
+export const useMIDIClock = ({ division = 1 }: Args) => {
   const { emitter } = useContext(MIDIContext);
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const handleClockMessage = () => {
+  const handleClockMessage = useCallback(() => {
     // Keep track of count through closure. Is there a better way?
     let steps = 0;
     return (type: number) => {
@@ -29,7 +31,7 @@ export const useMIDIClock = (division = 1) => {
           break;
       }
     };
-  };
+  }, [division, setStep, setIsPlaying]);
 
   useEffect(() => {
     const id = emitter.subscribe('clock', handleClockMessage());
@@ -37,5 +39,5 @@ export const useMIDIClock = (division = 1) => {
       emitter.unsubscribe('clock', id);
     };
   }, [emitter, handleClockMessage]);
-  return [step, isPlaying];
+  return { step, isPlaying };
 };
