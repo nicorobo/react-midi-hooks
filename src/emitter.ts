@@ -49,7 +49,7 @@ export class MIDIEmitter {
         }
         break;
       case MIDIConstants.noteOn:
-      case MIDIConstants.noteOff: // Note On/Off Message
+      case MIDIConstants.noteOff:
         for (const key in note) {
           note[key]({
             target: message.data[1], // note

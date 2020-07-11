@@ -8,7 +8,6 @@ export const useMIDINotes = (filter: MIDIFilter = {}) => {
   const value = useMIDINote(filter);
   useEffect(() => {
     if (value === notes[notes.length - 1]) {
-      console.log('useless');
       return;
     }
     if (value.on) {

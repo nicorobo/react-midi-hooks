@@ -32,7 +32,7 @@ export const useMIDIClock = (division = 1) => {
   };
 
   useEffect(() => {
-    const id = emitter.subscribe('clock', handleClockMessage);
+    const id = emitter.subscribe('clock', handleClockMessage());
     return () => {
       emitter.unsubscribe('clock', id);
     };

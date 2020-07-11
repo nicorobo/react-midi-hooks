@@ -5,7 +5,7 @@ import { MIDIContext } from './midi-provider';
 export const useMIDINote = ({
   target: noteFilter,
   channel: channelFilter,
-}: MIDIFilter = {}) => {
+}: MIDIFilter = {}): MIDINote | undefined => {
   const { emitter } = useContext(MIDIContext);
   const [value, setValue] = useState<MIDINote | undefined>();
 
