@@ -15,7 +15,7 @@ export const useMIDIOutput = (output: Output) => {
     const ccAndChannel = MIDIConstants.cc | getChannel(channel);
     output.send([ccAndChannel, control, value]);
   };
-  return { noteOn, noteOff, cc };
+  return { noteOn, noteOff, cc, send: output.send };
 };
 
 const getChannel = (channel: number) => {
