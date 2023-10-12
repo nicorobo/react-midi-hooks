@@ -1,3 +1,7 @@
 dist
 ideas.txt
 node_modules
+*.local
+*.log
+/.vscode/
+.DS_Store
