@@ -19,8 +19,10 @@ export const MIDIProvider = ({ children }: Props) => {
   useEffect(() => {
     if (Boolean(navigator?.requestMIDIAccess)) {
       navigator.requestMIDIAccess().then((access: WebMidi.MIDIAccess) => {
+        console.log('[midi access received]');
         dispatch(accessReceived(access));
         access.onstatechange = () => {
+          console.log('[midi access state change]');
           dispatch(accessReceived(access));
         };
       });

@@ -1,16 +1,28 @@
-import { useContext } from 'react';
-import { MIDIContext, MIDIProvider } from '../lib/main';
+import { useMIDIOutput, MIDIProvider } from '../lib/main';
 
-const MIDIMonitor = () => {
-  const reducerState = useContext(MIDIContext);
-  console.log(reducerState.state);
-  return <p>MIDI Monitor</p>;
+const MIDIBoard = () => {
+  const { noteOn, noteOff } = useMIDIOutput();
+  const playNote = (note: number) => {
+    if (noteOn && noteOff) {
+      noteOn(note);
+      window.setTimeout(() => noteOff(note), 100);
+    }
+  };
+  return (
+    <div>
+      <button onClick={() => playNote(60)}>C</button>
+      <button onClick={() => playNote(64)}>E</button>
+      <button onClick={() => playNote(67)}>G</button>
+      <button onClick={() => playNote(71)}>B</button>
+    </div>
+  );
 };
+
 function App() {
   return (
     <MIDIProvider>
       <h1>@react-midi/hooks Test App</h1>
-      <MIDIMonitor />
+      <MIDIBoard />
     </MIDIProvider>
   );
 }
