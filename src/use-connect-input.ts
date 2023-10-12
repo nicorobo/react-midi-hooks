@@ -12,7 +12,7 @@ export const useConnectInput = (input: Input) => {
 };
 
 // If listeners were kept in a general .listeners field then 100 functions listening for a noteOn event would get
-// called for every clock tick. I imagine this would affect performance. There must be a better way than this as well!
+// called for every clock tick. I imagine this would affect performance. There must be a better way than this as well
 function handleMIDIMessage(message: MIDIMessage) {
   const action = message.data[0] & 0xf0; // Mask channel/least significant bits;
   const leastSig = message.data[0] & 0x0f; // Mask action bits;
