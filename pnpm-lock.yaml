@@ -11,6 +11,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.7
     version: 18.2.13
+  '@types/webmidi':
+    specifier: ^2.0.8
+    version: 2.0.8
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.0.0
     version: 6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2)
@@ -604,6 +607,10 @@ packages:
 
   /@types/semver@7.5.3:
     resolution: {integrity: sha512-OxepLK9EuNEIPxWNME+C6WwbRAOOI2o2BaQEGzz5Lu2e4Z5eDnEo+/aVEDMIXywoJitJ7xWd641wrGLZdtwRyw==}
+    dev: true
+
+  /@types/webmidi@2.0.8:
+    resolution: {integrity: sha512-GMwIMYwLNpevZfcBeNrwavlbqY33SVfZdvQYfIAGtUFZnDZnDcMIN9s52Ksz341ylGUszOcAKlXUfz3QBOaA+w==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2):

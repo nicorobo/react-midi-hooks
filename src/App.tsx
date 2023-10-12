@@ -1,25 +1,17 @@
-import { useState } from 'react';
-import { useFortune } from '../lib/main';
+import { useContext } from 'react';
+import { MIDIContext, MIDIProvider } from '../lib/main';
 
+const MIDIMonitor = () => {
+  const reducerState = useContext(MIDIContext);
+  console.log(reducerState.state);
+  return <p>MIDI Monitor</p>;
+};
 function App() {
-  const [count, setCount] = useState(0);
-  const fortune = useFortune({ fortune: 'You will have much luck' });
-  console.log({ fortune });
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <MIDIProvider>
+      <h1>@react-midi/hooks Test App</h1>
+      <MIDIMonitor />
+    </MIDIProvider>
   );
 }
 
