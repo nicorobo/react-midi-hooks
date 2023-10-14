@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useCallback } from 'react';
 import { Message, MIDIFilter, MIDIControl } from '../types';
-import { MIDIContext } from '../midi-provider';
+import { useSubscribe } from './use-subscribe';
 
 // Before a control message is sent, we do not have a default value for the control.
 type MIDIControlState = MIDIControl & { value?: number };
@@ -9,7 +9,6 @@ export const useMIDIControl = ({
   target: controlFilter,
   channel: channelFilter,
 }: MIDIFilter = {}) => {
-  const { emitter } = useContext(MIDIContext);
   const [value, setValue] = useState<MIDIControlState | undefined>(undefined);
   const handleCC = useCallback(
     (message: Message) => {
@@ -23,12 +22,6 @@ export const useMIDIControl = ({
     },
     [controlFilter, channelFilter, setValue]
   );
-
-  useEffect(() => {
-    const id = emitter.subscribe('control', handleCC);
-    return () => {
-      emitter.unsubscribe('control', id);
-    };
-  }, [emitter, handleCC]);
+  useSubscribe('control', handleCC);
   return value;
 };

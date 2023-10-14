@@ -1,8 +1,6 @@
 import uniqid from 'uniqid';
-import { MIDIMessage, Message, NoteMessage } from './types';
+import { MIDIMessage, Message, NoteMessage, EventName } from './types';
 import { MIDIConstants } from './constants';
-
-type EventName = 'all' | 'note' | 'clock' | 'control';
 
 type Subscriptions = {
   all: { [id: string]: (args: MIDIMessage) => void };

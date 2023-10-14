@@ -43,3 +43,5 @@ export type MIDIControl = {
   value: number;
   channel: number;
 };
+
+export type EventName = 'all' | 'note' | 'clock' | 'control';

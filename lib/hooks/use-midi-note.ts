@@ -1,12 +1,11 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useCallback } from 'react';
 import { MIDIFilter, MIDINote, NoteMessage } from '../types';
-import { MIDIContext } from '../midi-provider';
+import { useSubscribe } from './use-subscribe';
 
 export const useMIDINote = ({
   target: noteFilter,
   channel: channelFilter,
 }: MIDIFilter = {}): MIDINote | undefined => {
-  const { emitter } = useContext(MIDIContext);
   const [value, setValue] = useState<MIDINote | undefined>();
 
   const handleNote = useCallback(
@@ -21,13 +20,7 @@ export const useMIDINote = ({
     },
     [noteFilter, channelFilter, setValue]
   );
-
-  useEffect(() => {
-    const id = emitter.subscribe('note', handleNote);
-    return () => {
-      emitter.unsubscribe('note', id);
-    };
-  }, [emitter, handleNote]);
+  useSubscribe('note', handleNote);
 
   return value;
 };
