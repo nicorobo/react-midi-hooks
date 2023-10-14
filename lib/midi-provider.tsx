@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import { MIDIEmitter } from './midi-emitter';
 import { reducer, accessReceived, defaultState, ReducerState } from './reducer';
 
+// TODO Don't expose the whole midi emitter, just subscribe and unsubscribe for now.
 export const MIDIContext = React.createContext<{
   state: ReducerState;
   dispatch: React.Dispatch<{

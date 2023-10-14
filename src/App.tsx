@@ -1,4 +1,10 @@
-import { useMIDIOutput, MIDIProvider } from '../lib/main';
+import {
+  useMIDIOutput,
+  MIDIProvider,
+  useMIDIControl,
+  useMIDIMessage,
+  useMIDIInputs,
+} from '../lib/main';
 
 const MIDIBoard = () => {
   const { noteOn, noteOff } = useMIDIOutput();
@@ -23,10 +29,39 @@ const MIDIBoard = () => {
   );
 };
 
+const MIDIMonitor = () => {
+  const { inputs, selectedInputId, selectInput } = useMIDIInputs();
+  const allCC = useMIDIControl();
+  const message = useMIDIMessage();
+  return (
+    <div>
+      {inputs.map((input) => (
+        <button
+          key={input.id}
+          style={selectedInputId == input.id ? { background: 'red' } : {}}
+          onClick={() => selectInput(input.id)}
+        >
+          {input.name}
+        </button>
+      ))}
+      <h2>Messages</h2>
+      {message?.data.join(',') ?? 'No message'}
+      <h2>CC</h2>
+      {allCC && (
+        <p>
+          <b>Channel:</b> {allCC.channel} <b>Control:</b> {allCC.control}{' '}
+          <b>Value:</b> {allCC.value}
+        </p>
+      )}
+    </div>
+  );
+};
+
 function App() {
   return (
     <MIDIProvider>
       <h1>@react-midi/hooks Test App</h1>
+      <MIDIMonitor />
       <MIDIBoard />
     </MIDIProvider>
   );

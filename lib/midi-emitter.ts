@@ -42,8 +42,8 @@ export class MIDIEmitter {
       case MIDIConstants.cc:
         for (const key in control) {
           control[key]({
-            target: message.data[2],
-            value: message.data[1],
+            target: message.data[1],
+            value: message.data[2],
             channel,
           }); // (value, control, channel)
         }
