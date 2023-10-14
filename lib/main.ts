@@ -7,3 +7,4 @@ export { useMIDIMessage } from './hooks/use-midi-message';
 export { useMIDIControls } from './hooks/use-midi-controls';
 export { useMIDINote } from './hooks/use-midi-note';
 export { useMIDINotes } from './hooks/use-midi-notes';
+export { useMIDIClock } from './hooks/use-midi-clock';
