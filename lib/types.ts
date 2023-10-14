@@ -8,7 +8,9 @@ export type Input = {
   onmidimessage: (message: MIDIMessage) => void;
 } & Connection;
 
-export type Output = { send: (message: number[]) => void } & Connection;
+export type Output = {
+  send: (message: number[], timestamp?: number) => void;
+} & Connection;
 
 export type MIDIFilter = {
   target?: number;

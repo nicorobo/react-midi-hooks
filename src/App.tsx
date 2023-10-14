@@ -4,16 +4,21 @@ const MIDIBoard = () => {
   const { noteOn, noteOff } = useMIDIOutput();
   const playNote = (note: number) => {
     if (noteOn && noteOff) {
-      noteOn(note);
-      window.setTimeout(() => noteOff(note), 100);
+      const notes = [
+        { note, channel: 1 },
+        { note, channel: 2 },
+        { note, channel: 3 },
+      ];
+      noteOn(notes);
+      window.setTimeout(() => noteOff(notes), 100);
     }
   };
   return (
     <div>
-      <button onClick={() => playNote(60)}>C</button>
-      <button onClick={() => playNote(64)}>E</button>
-      <button onClick={() => playNote(67)}>G</button>
-      <button onClick={() => playNote(71)}>B</button>
+      <button onMouseDown={() => playNote(60)}>1</button>
+      <button onMouseDown={() => playNote(61)}>2</button>
+      <button onMouseDown={() => playNote(62)}>3</button>
+      <button onMouseDown={() => playNote(63)}>4</button>
     </div>
   );
 };
