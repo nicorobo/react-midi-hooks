@@ -1,4 +1,5 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
+import { MIDIEmitter } from './midi-emitter';
 import { reducer, accessReceived, defaultState, ReducerState } from './reducer';
 
 export const MIDIContext = React.createContext<{
@@ -7,14 +8,17 @@ export const MIDIContext = React.createContext<{
     type: string;
     payload?: any;
   }>;
-}>({ state: defaultState, dispatch: () => null });
+  emitter: MIDIEmitter;
+}>({ state: defaultState, dispatch: () => null, emitter: new MIDIEmitter() });
 
 type Props = {
   children?: React.ReactNode;
 };
 
 export const MIDIProvider = ({ children }: Props) => {
+  const emitter = useRef(new MIDIEmitter());
   const [state, dispatch] = useReducer(reducer, defaultState);
+  const { inputs, selectedInputId } = state;
 
   useEffect(() => {
     if (Boolean(navigator?.requestMIDIAccess)) {
@@ -29,8 +33,19 @@ export const MIDIProvider = ({ children }: Props) => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    const selectedInput = inputs.find((i) => i.id === selectedInputId);
+    if (selectedInput) {
+      selectedInput.onmidimessage = emitter.current.onMIDIMessage.bind(
+        emitter.current
+      );
+      return () => (selectedInput.onmidimessage = null);
+    }
+    return () => {};
+  }, [inputs, selectedInputId]);
+
   return (
-    <MIDIContext.Provider value={{ state, dispatch }}>
+    <MIDIContext.Provider value={{ state, dispatch, emitter: emitter.current }}>
       {children}
     </MIDIContext.Provider>
   );

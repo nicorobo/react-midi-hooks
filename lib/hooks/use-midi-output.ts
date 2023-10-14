@@ -1,5 +1,5 @@
 import { MIDIConstants } from '../constants';
-import { useMIDIOutputs } from './use-outputs';
+import { useMIDIOutputs } from './use-midi-outputs';
 
 type SingleNote = number;
 type MultipleNotes = number[];

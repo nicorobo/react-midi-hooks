@@ -5,7 +5,7 @@ export type Connection = {
 };
 
 export type Input = {
-  onmidimessage: (message: MIDIMessage) => void;
+  onmidimessage: ((message: MIDIMessage) => void) | null;
 } & Connection;
 
 export type Output = {
