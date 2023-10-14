@@ -1,14 +1,14 @@
 import uniqid from 'uniqid';
-import { MIDIMessage } from './types';
+import { MIDIMessage, Message, NoteMessage } from './types';
 import { MIDIConstants } from './constants';
 
 type EventName = 'all' | 'note' | 'clock' | 'control';
 
 type Subscriptions = {
-  all: { [id: string]: (args: any) => void };
-  note: { [id: string]: (args: any) => void };
-  clock: { [id: string]: (args: any) => void };
-  control: { [id: string]: (args: any) => void };
+  all: { [id: string]: (args: MIDIMessage) => void };
+  note: { [id: string]: (args: NoteMessage) => void };
+  clock: { [id: string]: (args: number) => void };
+  control: { [id: string]: (args: Message) => void };
 };
 
 export class MIDIEmitter {

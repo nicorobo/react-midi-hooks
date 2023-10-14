@@ -27,6 +27,10 @@ export type Message = {
   channel: number;
 };
 
+export type NoteMessage = Message & {
+  on: boolean;
+};
+
 export type MIDINote = {
   note: number;
   velocity: number;
