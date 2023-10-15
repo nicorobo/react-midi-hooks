@@ -12,9 +12,16 @@ export type Output = {
   send: (message: number[], timestamp?: number) => void;
 } & Connection;
 
-export type MIDIFilter = {
-  target?: number;
+export type MIDINoteFilter = {
+  note?: number; // allow multiple?
   channel?: number;
+  // min/max velocity?
+};
+
+export type MIDIControlFilter = {
+  cc?: number; // allow multiple?
+  channel?: number;
+  // min/max value?
 };
 
 export type MIDIMessage = {

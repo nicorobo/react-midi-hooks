@@ -1,3 +1,4 @@
+import { MultipleNotesWithOptions } from '../lib/hooks/use-midi-output';
 import {
   useMIDIOutput,
   MIDIProvider,
@@ -9,26 +10,84 @@ import {
   useMIDINote,
   useMIDINotes,
 } from '../lib/main';
+import './App.css';
 
 const MIDIBoard = () => {
   const { noteOn, noteOff } = useMIDIOutput();
-  const playNote = (note: number) => {
+  const playNotesFromNumArr = (notes: number[]) => {
     if (noteOn && noteOff) {
-      const notes = [
-        { note, channel: 1 },
-        { note, channel: 2 },
-        { note, channel: 3 },
-      ];
       noteOn(notes);
-      window.setTimeout(() => noteOff(notes), 100);
+      window.setTimeout(() => noteOff(notes), 1000);
+    }
+  };
+  const playNotesFromObjArr = (notes: MultipleNotesWithOptions) => {
+    if (noteOn && noteOff) {
+      noteOn(notes);
+      window.setTimeout(() => noteOff(notes), 1000);
     }
   };
   return (
-    <div>
-      <button onMouseDown={() => playNote(60)}>1</button>
-      <button onMouseDown={() => playNote(61)}>2</button>
-      <button onMouseDown={() => playNote(62)}>3</button>
-      <button onMouseDown={() => playNote(63)}>4</button>
+    <div className="section">
+      <h2 className="section-title">Output</h2>
+      <div className="subsection">
+        <div className="subsection-title">noteOn()</div>
+        <div className="subsection-description">
+          Triggers note on with various settings
+        </div>
+        <button onMouseDown={() => noteOn && noteOn(60)}>{'noteOn(60)'}</button>
+        <button onMouseDown={() => noteOn && noteOn(60, { velocity: 50 })}>
+          {'noteOn(60, {velocity: 50})'}
+        </button>
+        <button onMouseDown={() => noteOn && noteOn(60, { channel: 2 })}>
+          {'noteOn(60, {channel: 2})'}
+        </button>
+        <button
+          onMouseDown={() => noteOn && noteOn(60, { velocity: 50, channel: 2 })}
+        >
+          {'noteOn(60, {velocity: 50, channel: 2})'}
+        </button>
+      </div>
+
+      <div className="subsection">
+        <div className="subsection-title">noteOff()</div>
+        <div className="subsection-description">
+          Triggers note off with various settings
+        </div>
+        <button onMouseDown={() => noteOff && noteOff(60)}>noteOff(60)</button>
+        <button onMouseDown={() => noteOff && noteOff(60, { velocity: 50 })}>
+          {'noteOff(60, {velocity: 50})'}
+        </button>
+        <button onMouseDown={() => noteOff && noteOff(60, { channel: 2 })}>
+          {'noteOff(60, {channel: 2})'}
+        </button>
+        <button
+          onMouseDown={() =>
+            noteOff && noteOff(60, { velocity: 50, channel: 2 })
+          }
+        >
+          {'noteOff(60, {velocity: 50, channel: 2})'}
+        </button>
+      </div>
+
+      <div className="subsection">
+        <div className="subsection-title">noteOn() + noteOff()</div>
+        <div className="subsection-description">
+          Triggers note on and schedules note off with setTimeout()
+        </div>
+        <button onMouseDown={() => playNotesFromNumArr([60, 63, 67])}>
+          noteOn([60, 63, 67])
+        </button>
+        <button
+          onMouseDown={() =>
+            playNotesFromObjArr([
+              { note: 60, velocity: 45 },
+              { note: 67, velocity: 90 },
+            ])
+          }
+        >
+          {'noteOn([{note: 60, velocity: 45}, {note: 67, velocity: 90}])'}
+        </button>
+      </div>
     </div>
   );
 };
@@ -36,86 +95,111 @@ const MIDIBoard = () => {
 const MIDIMonitor = () => {
   const message = useMIDIMessage();
   return (
-    <div>
-      <h3>All Messages</h3>
-      {message?.data.join(',') ?? 'No message'}
+    <div className="section">
+      <div className="section-title">All Input</div>
+      <div className="subsection">
+        <div className="subsection-title">useMIDIMessage()</div>
+        <div className="subsection-description">
+          Listens to all midi messages coming from input.
+        </div>
+        {message?.data.join(',') ?? 'No message'}
+      </div>
     </div>
   );
 };
 
 const MIDIControlTest = () => {
   const allCC = useMIDIControl();
-  const cc4 = useMIDIControl({ target: 4 });
+  const cc4 = useMIDIControl({ cc: 4 });
   const [cc5, cc6, cc7] = useMIDIControls([5, 6, 7]);
   return (
-    <div>
-      <h3>
-        <code>{'useMIDIControl()'}</code>
-      </h3>
-      {allCC && (
-        <p>
-          <b>Channel:</b> {allCC.channel} <b>Control:</b> {allCC.control}{' '}
-          <b>Value:</b> {allCC.value}
-        </p>
-      )}
-      <h3>
-        <code>{'useMIDIControl({ target: 4 })'}</code>
-      </h3>
-      {cc4 && (
-        <p>
-          <b>Channel:</b> {cc4.channel} <b>Control:</b> {cc4.control}{' '}
-          <b>Value:</b> {cc4.value}
-        </p>
-      )}
-      <h3>
-        <code>{'useMIDIControls([5, 6, 7])'}</code>
-      </h3>
-      <b>CC 5: </b>
-      {cc5}
-      <b>CC 6: </b>
-      {cc6}
-      <b>CC 7: </b>
-      {cc7}
+    <div className="section">
+      <div className="section-title">MIDI CCs</div>
+      <div className="subsection">
+        <div className="subsection-title">useMIDIControl()</div>
+        <div className="subsection-description">
+          Listens to all midi control messages coming from input.
+        </div>
+
+        <div>
+          Channel: <span className="value">{allCC?.channel}</span> Control:{' '}
+          <span className="value">{allCC?.control}</span> Value:{' '}
+          <span className="value">{allCC?.value}</span>
+        </div>
+      </div>
+      <div className="subsection">
+        <div className="subsection-title">
+          {'useMIDIControl({ target: 4 })'}
+        </div>
+        <div className="subsection-description">
+          Listens to CC 4 messages coming from input.
+        </div>
+
+        <div>
+          Channel: <span className="value">{cc4?.channel}</span> Control:{' '}
+          <span className="value">{cc4?.control}</span> Value:{' '}
+          <span className="value">{cc4?.value}</span>
+        </div>
+      </div>
+
+      <div className="subsection">
+        <div className="subsection-title">{'useMIDIControls([5, 6, 7])'}</div>
+        <div className="subsection-description">
+          Listens to CC4 messages coming from input.
+        </div>
+        CC5: <span className="value">{cc5}</span> CC6:{' '}
+        <span className="value">{cc6}</span> CC7:{' '}
+        <span className="value">{cc7}</span>
+      </div>
     </div>
   );
 };
 
 const MIDINoteTest = () => {
   const allNote = useMIDINote();
-  const middleC = useMIDINote({ target: 60 });
+  const middleC = useMIDINote({ note: 60 });
   const notes = useMIDINotes();
   return (
-    <div>
-      <h3>
-        <code>{'useMIDINote()'}</code>
-      </h3>
-      {allNote && (
+    <div className="section">
+      <div className="section-title">Notes</div>
+      <div className="subsection">
+        <div className="subsection-title">useMIDINote()</div>
+        <div className="subsection-description">
+          Listens to all incoming MIDI notes on input.
+        </div>
         <p>
-          <b>Channel:</b> {allNote.channel} <b>Control:</b> {allNote.note}{' '}
-          <b>Velocity:</b> {allNote.velocity} <b>On:</b> {allNote.on}
+          Channel: <span className="value">{allNote?.channel}</span> Control:{' '}
+          <span className="value">{allNote?.note}</span> Velocity:{' '}
+          <span className="value">{allNote?.velocity}</span> On:{' '}
+          <span className="value">{allNote?.on ? 'true' : 'false'}</span>
         </p>
-      )}
-      <h3>
-        <code>{'useMIDINote({ target: 60 })'}</code>
-      </h3>
-      {middleC && (
+      </div>
+      <div className="subsection">
+        <div className="subsection-title">{'useMIDINote({ target: 60 })'}</div>
+        <div className="subsection-description">
+          Listens to middle C coming from input.
+        </div>
         <p>
-          <b>Channel:</b> {middleC.channel} <b>Note:</b> {middleC.note}{' '}
-          <b>Velocity:</b> {middleC.velocity} <b>On:</b> {middleC.on}
+          Channel: <span className="value">{middleC?.channel}</span> Note:{' '}
+          <span className="value">{middleC?.note}</span> Velocity:{' '}
+          <span className="value">{middleC?.velocity}</span> On:{' '}
+          <span className="value">{middleC?.on ? 'true' : 'false'}</span>
         </p>
-      )}
-      <h3>
-        <code>{'useMIDINotes()'}</code>
-      </h3>
-      {notes.map((note, i) => (
-        <p key={note.note + i}>
-          <b>Note: </b>
-          {note.note} <b>Velocity: </b>
-          {note.velocity}
-          <b>Channel: </b>
-          {note.channel}
-        </p>
-      ))}
+      </div>
+
+      <div className="subsection tall">
+        <div className="subsection-title">{'useMIDINotes()'}</div>
+        <div className="subsection-description">
+          Listens to input and maintains a list of active notes.
+        </div>
+        {notes.map((note, i) => (
+          <p key={note.note + i}>
+            Note: <span className="value">{note.note}</span> Velocity:{' '}
+            <span className="value">{note.velocity}</span> Channel:{' '}
+            <span className="value">{note.channel}</span>
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
@@ -123,22 +207,27 @@ const MIDIInterfaceSelector = () => {
   const { inputs, selectedInputId, selectInput } = useMIDIInputs();
   const { outputs, selectedOutputId, selectOutput } = useMIDIOutputs();
   return (
-    <div>
-      <div>
-        <h3>Select Input</h3>
-        {inputs.map(({ id, name }) => (
-          <button key={id} onClick={() => selectInput(id)}>
-            {name + (selectedInputId === id ? ' (selected)' : '')}
-          </button>
-        ))}
-      </div>
-      <div>
-        <h3>Select Output</h3>
-        {outputs.map(({ id, name }) => (
-          <button key={id} onClick={() => selectOutput(id)}>
-            {name + (selectedOutputId === id ? ' (selected)' : '')}
-          </button>
-        ))}
+    <div className="section">
+      <div className="section-title">MIDI Interface</div>
+      <div className="subsection">
+        <div className="subsection-title">Interface Selection</div>
+        <div className="subsection-description">
+          Lists all inputs/outputs, switching when clicked.
+        </div>
+        <div>
+          {inputs.map(({ id, name }) => (
+            <button key={id} onClick={() => selectInput(id)}>
+              {name + (selectedInputId === id ? ' (selected)' : '')}
+            </button>
+          ))}
+        </div>
+        <div>
+          {outputs.map(({ id, name }) => (
+            <button key={id} onClick={() => selectOutput(id)}>
+              {name + (selectedOutputId === id ? ' (selected)' : '')}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

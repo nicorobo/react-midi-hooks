@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { MIDIFilter } from '../types';
+import { MIDIControlFilter } from '../types';
 import { useMIDIControl } from './use-midi-control';
 
 export const useMIDIControls = (
   controls: number[],
-  filter: MIDIFilter = {}
+  filter: Exclude<MIDIControlFilter, 'cc'> = {}
 ) => {
   const [values, setValues] = useState<number[]>(controls.map(() => 0));
   const cc = useMIDIControl(filter);

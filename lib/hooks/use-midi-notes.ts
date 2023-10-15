@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { MIDIFilter, MIDINote } from '../types';
+import { MIDINoteFilter, MIDINote } from '../types';
 import { useMIDINote } from './use-midi-note';
 
 // TODO get this to work with mutiple channels
-export const useMIDINotes = (filter: MIDIFilter = {}) => {
+export const useMIDINotes = (filter: MIDINoteFilter = {}) => {
   const [notes, setNotes] = useState<MIDINote[]>([]);
   const value = useMIDINote(filter);
   useEffect(() => {

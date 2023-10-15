@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
-import { MIDIFilter, MIDINote, NoteMessage } from '../types';
+import { MIDINote, MIDINoteFilter, NoteMessage } from '../types';
 import { useSubscribe } from './use-subscribe';
 
 export const useMIDINote = ({
-  target: noteFilter,
+  note: noteFilter,
   channel: channelFilter,
-}: MIDIFilter = {}): MIDINote | undefined => {
+}: MIDINoteFilter = {}): MIDINote | undefined => {
   const [value, setValue] = useState<MIDINote | undefined>();
 
   const handleNote = useCallback(

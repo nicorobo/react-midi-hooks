@@ -3,7 +3,7 @@ import { useMIDIOutputs } from './use-midi-outputs';
 
 type SingleNote = number;
 type MultipleNotes = number[];
-type MultipleNotesWithOptions = {
+export type MultipleNotesWithOptions = {
   note: number;
   velocity?: number;
   channel?: number;
