@@ -1,31 +1,30 @@
-import { MultipleNotesWithOptions } from '../lib/hooks/use-midi-output';
+import { MultipleNotesWithOptions } from '../lib/hooks/use-midi-output'
 import {
   useMIDIOutput,
   MIDIProvider,
   useMIDIControl,
   useMIDIMessage,
-  useMIDIInputs,
-  useMIDIOutputs,
   useMIDIControls,
   useMIDINote,
   useMIDINotes,
-} from '../lib/main';
-import './App.css';
+} from '../lib/main'
+import './App.css'
+import { MIDIInterfaceSelector } from './MIDIInterfaceSelector'
 
 const MIDIBoard = () => {
-  const { noteOn, noteOff } = useMIDIOutput();
+  const { noteOn, noteOff } = useMIDIOutput()
   const playNotesFromNumArr = (notes: number[]) => {
     if (noteOn && noteOff) {
-      noteOn(notes);
-      window.setTimeout(() => noteOff(notes), 1000);
+      noteOn(notes)
+      window.setTimeout(() => noteOff(notes), 1000)
     }
-  };
+  }
   const playNotesFromObjArr = (notes: MultipleNotesWithOptions) => {
     if (noteOn && noteOff) {
-      noteOn(notes);
-      window.setTimeout(() => noteOff(notes), 1000);
+      noteOn(notes)
+      window.setTimeout(() => noteOff(notes), 1000)
     }
-  };
+  }
   return (
     <div className="section">
       <h2 className="section-title">Output</h2>
@@ -89,11 +88,11 @@ const MIDIBoard = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const MIDIMonitor = () => {
-  const message = useMIDIMessage();
+  const message = useMIDIMessage()
   return (
     <div className="section">
       <div className="section-title">All Input</div>
@@ -105,13 +104,13 @@ const MIDIMonitor = () => {
         {message?.data.join(',') ?? 'No message'}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const MIDIControlTest = () => {
-  const allCC = useMIDIControl();
-  const cc4 = useMIDIControl({ cc: 4 });
-  const [cc5, cc6, cc7] = useMIDIControls([5, 6, 7]);
+  const allCC = useMIDIControl()
+  const cc4 = useMIDIControl({ cc: 4 })
+  const [cc5, cc6, cc7] = useMIDIControls([5, 6, 7])
   return (
     <div className="section">
       <div className="section-title">MIDI CCs</div>
@@ -152,13 +151,13 @@ const MIDIControlTest = () => {
         <span className="value">{cc7}</span>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const MIDINoteTest = () => {
-  const allNote = useMIDINote();
-  const middleC = useMIDINote({ note: 60 });
-  const notes = useMIDINotes();
+  const allNote = useMIDINote()
+  const middleC = useMIDINote({ note: 60 })
+  const notes = useMIDINotes()
   return (
     <div className="section">
       <div className="section-title">Notes</div>
@@ -201,37 +200,8 @@ const MIDINoteTest = () => {
         ))}
       </div>
     </div>
-  );
-};
-const MIDIInterfaceSelector = () => {
-  const { inputs, selectedInputId, selectInput } = useMIDIInputs();
-  const { outputs, selectedOutputId, selectOutput } = useMIDIOutputs();
-  return (
-    <div className="section">
-      <div className="section-title">MIDI Interface</div>
-      <div className="subsection">
-        <div className="subsection-title">Interface Selection</div>
-        <div className="subsection-description">
-          Lists all inputs/outputs, switching when clicked.
-        </div>
-        <div>
-          {inputs.map(({ id, name }) => (
-            <button key={id} onClick={() => selectInput(id)}>
-              {name + (selectedInputId === id ? ' (selected)' : '')}
-            </button>
-          ))}
-        </div>
-        <div>
-          {outputs.map(({ id, name }) => (
-            <button key={id} onClick={() => selectOutput(id)}>
-              {name + (selectedOutputId === id ? ' (selected)' : '')}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+  )
+}
 
 function App() {
   return (
@@ -243,7 +213,7 @@ function App() {
       <MIDINoteTest />
       <MIDIBoard />
     </MIDIProvider>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,5 +1,5 @@
 dist
-ideas.txt
+*ideas.txt
 node_modules
 *.local
 *.log
