@@ -1,0 +1,13 @@
+lib
+src
+*ideas.txt
+node_modules
+*.local
+*.log
+/.vscode/
+.DS_Store
+tsconfig-build.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+index.html

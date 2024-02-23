@@ -1,0 +1,31 @@
+*,
+body {
+  background-color: #111111;
+  color: white;
+  font-family: monospace;
+}
+
+.section {
+  margin-bottom: 4rem;
+  /* background: b; */
+}
+.section-title {
+  font-size: 16px;
+}
+.subsection {
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+.subsection.tall {
+  height: 200px;
+}
+.subsection-title {
+  color: rgb(83, 218, 146);
+}
+.subsection-description {
+  margin-bottom: 0.5rem;
+  color: #5a55a0;
+}
+.value {
+  color: rgb(222, 114, 255);
+}
