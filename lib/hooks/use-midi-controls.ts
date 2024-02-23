@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import { MIDIControlFilter } from '../types';
-import { useMIDIControl } from './use-midi-control';
+import { useState, useEffect } from 'react'
+import { MIDIControlFilter } from '../types'
+import { useMIDIControl } from './use-midi-control'
 
 export const useMIDIControls = (
   controls: number[],
   filter: Exclude<MIDIControlFilter, 'cc'> = {}
 ) => {
-  const [values, setValues] = useState<number[]>(controls.map(() => 0));
-  const cc = useMIDIControl(filter);
+  const [values, setValues] = useState<number[]>(controls.map(() => 0))
+  const cc = useMIDIControl(filter)
 
   // TODO: Get this all fixed up
   useEffect(() => {
     if (cc) {
-      const targetIndex = controls.indexOf(cc.control);
+      const targetIndex = controls.indexOf(cc.control)
       if (targetIndex > -1)
-        setValues(values.map((v, i) => (i === targetIndex ? cc.value : v)));
+        setValues(values.map((v, i) => (i === targetIndex ? cc.value : v)))
     }
-  }, [cc]);
+  }, [cc])
 
-  return values;
-};
+  return values
+}

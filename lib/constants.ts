@@ -6,4 +6,4 @@ export const MIDIConstants = {
   tick: 0x08,
   play: 0x0a,
   stop: 0x0c,
-};
+}
