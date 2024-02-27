@@ -4,6 +4,8 @@ import { useSubscribe } from './use-subscribe'
 type Args = {
   division: number
 }
+
+// TODO: Test and complete. This is a work in progress.
 export const useMIDIClock = ({ division = 1 }: Args) => {
   const [step, setStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)

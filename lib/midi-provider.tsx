@@ -16,6 +16,24 @@ type Props = {
   children?: React.ReactNode
 }
 
+/**
+ * Provides a MIDI context for its child components, managing MIDI access, inputs, and state changes.
+ *
+ * This component encapsulates MIDI initialization and state management logic, leveraging the Web MIDI API.
+ * It listens for MIDI access and input changes, updating the context state accordingly. This state is then
+ * accessible to any child components through the MIDIContext. It also sets up an emitter for MIDI messages,
+ * allowing child components to subscribe to MIDI message events.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - Child components that will have access to the MIDIContext.
+ *
+ * @example
+ * // Wrap your application or component tree with MIDIProvider to provide MIDI context.
+ * <MIDIProvider>
+ *   <YourComponent />
+ * </MIDIProvider>
+ */
+
 export const MIDIProvider = ({ children }: Props) => {
   const emitter = useRef(new MIDIEmitter())
   const [state, dispatch] = useReducer(reducer, defaultState)
@@ -24,10 +42,8 @@ export const MIDIProvider = ({ children }: Props) => {
   useEffect(() => {
     if (Boolean(navigator?.requestMIDIAccess)) {
       navigator.requestMIDIAccess().then((access: WebMidi.MIDIAccess) => {
-        console.log('[midi access received]')
         dispatch(accessReceived(access))
         access.onstatechange = () => {
-          console.log('[midi access state change]')
           dispatch(accessReceived(access))
         }
       })

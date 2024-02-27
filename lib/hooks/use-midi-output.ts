@@ -16,6 +16,25 @@ type NoteOptions = {
   channel?: number
 }
 
+/**
+ * Hook to interact with a MIDI output device.
+ *
+ * This hook provides methods to send MIDI messages (note on, note off, and control change) to the selected MIDI output.
+ * It simplifies the process of sending MIDI messages by abstracting the details of constructing MIDI message arrays.
+ *
+ * @returns {Object} An object containing the methods to interact with the MIDI output:
+ *  - noteOn: Function to send a 'note on' message for one or more notes.
+ *  - noteOff: Function to send a 'note off' message for one or more notes.
+ *  - cc: Function to send a control change message.
+ *
+ * @example
+ * // To use this hook in a component to send a 'note on' and 'note off' message
+ * const { noteOn, noteOff, cc } = useMIDIOutput();
+ * noteOn(60, { velocity: 127, channel: 1 }); // Send 'note on' for note 60 with velocity 127 on channel 1
+ * noteOff(60, { channel: 1 }); // Send 'note off' for note 60 on channel 1
+ * cc(64, 127, 1); // Send control change message with control number 64, value 127, on channel 1
+ */
+
 export const useMIDIOutput = () => {
   const { output } = useMIDIOutputs()
   if (!output) return {}

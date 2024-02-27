@@ -1,3 +1,4 @@
+import React from 'react'
 import { MultipleNotesWithOptions } from '../lib/hooks/use-midi-output'
 import {
   useMIDIOutput,
@@ -9,7 +10,7 @@ import {
   useMIDINotes,
 } from '../lib/main'
 import './App.css'
-import { MIDIInterfaceSelector } from './MIDIInterfaceSelector'
+import { MIDIInterfaceSelector } from './MIDIInterfaceSelector.tsx'
 
 const MIDIBoard = () => {
   const { noteOn, noteOff } = useMIDIOutput()

@@ -12,6 +12,13 @@ export type Output = {
   send: (message: number[], timestamp?: number) => void
 } & Connection
 
+export type InputsReturnValue = {
+  input: Input | undefined
+  inputs: Input[]
+  selectInput: (inputId: string) => void
+  selectedInputId: string | null
+}
+
 export type MIDINoteFilter = {
   note?: number // allow multiple?
   channel?: number
