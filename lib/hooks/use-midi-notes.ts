@@ -32,7 +32,7 @@ export const useMIDINotes = (filter: MIDINoteFilter = {}) => {
       if (value === notes[notes.length - 1]) {
         return
       }
-      if (value.on) {
+      if (value.on && value.velocity !== 0) {
         setNotes([...notes, value])
       } else {
         setNotes(notes.filter((n) => n.note !== value.note))
